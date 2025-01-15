@@ -92,7 +92,7 @@ if uploaded_file is not None:
         
         with col1:
             st.subheader("Original Image")
-            st.image(image, use_container_width=True)
+            st.image(image, width=600)
         
         # Get predictions
         defects, vis_mask = model.predict(image)
@@ -103,7 +103,7 @@ if uploaded_file is not None:
             image_rgb = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
             image_rgb = cv2.resize(image_rgb, (vis_mask.shape[1], vis_mask.shape[0]))  # Match sizes
             blended = cv2.addWeighted(image_rgb, 0.7, vis_mask, 0.3, 0)
-            st.image(blended, use_container_width=True)
+            st.image(blended, width=600)
         
         # Display defect analysis
         if defects:
