@@ -4,3 +4,7 @@ __pycache__/
 .venv/
 venv/
 .DS_Store
+models/saved_model/model.pt
+models/saved_model/model_weights.zip
+models/saved_model/model.pt
+models/saved_model/model_weights.zip
