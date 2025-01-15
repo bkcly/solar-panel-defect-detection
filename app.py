@@ -92,7 +92,7 @@ if uploaded_file is not None:
         
         with col1:
             st.subheader("Original Image")
-            st.image(image, width=600)
+            st.image(image, width=400)
         
         # Get predictions
         defects, vis_mask = model.predict(image)
@@ -103,13 +103,21 @@ if uploaded_file is not None:
             image_rgb = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
             image_rgb = cv2.resize(image_rgb, (vis_mask.shape[1], vis_mask.shape[0]))  # Match sizes
             blended = cv2.addWeighted(image_rgb, 0.7, vis_mask, 0.3, 0)
-            st.image(blended, width=600)
+            st.image(blended, width=400)
         
         # Display defect analysis
         if defects:
             st.subheader("Defect Analysis")
+            # Convert the defects list to DataFrame and add descriptions
             df = pd.DataFrame(defects)
             df = df.round({'coverage': 2})
+            # Rename columns and add units
+            df.columns = ['Defect Type', 'Area (pixels)', 'Coverage (%)']
+            st.markdown("""
+            **Analysis Details:**
+            - Area: Number of pixels affected by the defect
+            - Coverage: Percentage of total image area affected
+            """)
             st.dataframe(df)
         else:
             st.info("No defects detected in the image.")
