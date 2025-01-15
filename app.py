@@ -113,12 +113,38 @@ if uploaded_file is not None:
             df = df.round({'coverage': 2})
             # Rename columns and add units
             df.columns = ['Defect Type', 'Area (pixels)', 'Coverage (%)']
+            
+            # Create color-coded defect type descriptions
             st.markdown("""
             **Analysis Details:**
             - Area: Number of pixels affected by the defect
             - Coverage: Percentage of total image area affected
+            
+            **Defect Types and Colors:**
+            - 🟫 Busbar: Horizontal conductive lines (brown)
+            - 🟪 Crack: Cell fractures or breaks (pink)
+            - 🟦 Cross: Cross-shaped defects (blue)
+            - 🟩 Dark: Areas with reduced luminescence (green)
             """)
-            st.dataframe(df)
+            
+            # Display the dataframe
+            st.dataframe(
+                df,
+                column_config={
+                    "Defect Type": st.column_config.Column(
+                        width="medium",
+                    ),
+                    "Area (pixels)": st.column_config.NumberColumn(
+                        width="medium",
+                        format="%d",
+                    ),
+                    "Coverage (%)": st.column_config.NumberColumn(
+                        width="medium",
+                        format="%.2f",
+                    ),
+                },
+                hide_index=True,
+            )
         else:
             st.info("No defects detected in the image.")
     except Exception as e:
